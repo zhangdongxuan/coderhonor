@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>NSObject对象占用多少内存 | Coding Honor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="平时所编写的Object-C代码，底层实现都是C/C++代码，OC的面向对象都是基于C/C++的数据结构实现的。">
+<meta name="keywords" content="iOS基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NSObject对象占用多少内存">
+<meta property="og:url" content="http://coderhonor.com/2021/04/09/NSObject对象占用多少内存/index.html">
+<meta property="og:site_name" content="Coding Honor">
+<meta property="og:description" content="平时所编写的Object-C代码，底层实现都是C/C++代码，OC的面向对象都是基于C/C++的数据结构实现的。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://coderhonor.com/images/ios/1.png">
+<meta property="og:image" content="http://coderhonor.com/images/ios/2.png">
+<meta property="og:image" content="http://coderhonor.com/images/ios/3.png">
+<meta property="og:updated_time" content="2021-04-09T15:04:10.093Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NSObject对象占用多少内存">
+<meta name="twitter:description" content="平时所编写的Object-C代码，底层实现都是C/C++代码，OC的面向对象都是基于C/C++的数据结构实现的。">
+<meta name="twitter:image" content="http://coderhonor.com/images/ios/1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="Coding Honor" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet">
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.jpeg" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Code Honor</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">明月别枝惊鹊，清风半夜鸣蝉。稻花香里说丰年，听取蛙声一片。</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/zhangdongxuan/" title="github">github</a>
+                            
+                                <a class="fl iteye" target="_blank" href="http://dxz.iteye.com" title="iteye">iteye</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/AVFoundation/" style="font-size: 10px;">AVFoundation</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/UI/" style="font-size: 20px;">UI</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/iOS基础/" style="font-size: 20px;">iOS基础</a> <a href="/tags/编译原理/" style="font-size: 10px;">编译原理</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a> <a href="/tags/音视频/" style="font-size: 20px;">音视频</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.zhangdongxuan.com">name</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Code Honor</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.jpeg" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Code Honor</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">明月别枝惊鹊，清风半夜鸣蝉。稻花香里说丰年，听取蛙声一片。</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="github" target="_blank" href="https://github.com/zhangdongxuan/" title="github">github</a>
+                    
+                        <a class="iteye" target="_blank" href="http://dxz.iteye.com" title="iteye">iteye</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-NSObject对象占用多少内存" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/04/09/NSObject对象占用多少内存/" class="article-date">
+      <time datetime="2021-04-09T09:42:34.000Z" itemprop="datePublished">2021-04-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      NSObject对象占用多少内存
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS基础/">iOS基础</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h3 id="NSObject的本质"><a href="#NSObject的本质" class="headerlink" title="NSObject的本质"></a>NSObject的本质</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">NSObject</span> *obj = [[<span class="built_in">NSObject</span> alloc] init];</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"Hello, World!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上一段代码使用如下一段命令进行rewrite后，会被改为c++代码，生成main.cpp</p>
+<blockquote>
+<p>xcrun  -sdk  iphoneos  clang  -arch  arm64  -rewrite-objc main.m</p>
+</blockquote>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="comment">/* @autoreleasepool */</span> &#123; __AtAutoreleasePool __autoreleasepool; </span><br><span class="line">        <span class="built_in">NSObject</span> *obj = ((<span class="built_in">NSObject</span> *(*)(<span class="keyword">id</span>, SEL))(<span class="keyword">void</span> *)objc_msgSend)((<span class="keyword">id</span>)((<span class="built_in">NSObject</span> *(*)(<span class="keyword">id</span>, SEL))(<span class="keyword">void</span> *)objc_msgSend)((<span class="keyword">id</span>)objc_getClass(<span class="string">"NSObject"</span>), sel_registerName(<span class="string">"alloc"</span>)), sel_registerName(<span class="string">"init"</span>));</span><br><span class="line">        <span class="built_in">NSLog</span>((<span class="built_in">NSString</span> *)&amp;__NSConstantStringImpl__var_folders_s0_4wsgyhps0fv7r90xwgjm4lwr0000gn_T_main_96c2d6_mi_0);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>NSObject 的结构为</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_class *Class;</span><br><span class="line"><span class="keyword">struct</span> objc_object &#123;</span><br><span class="line">    Class _Nonnull isa __attribute__((deprecated));</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_object <span class="built_in">NSObject</span>;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到NSObject是由结构体objc_object来定义的，objc_object里面只有一个Class类型的isa属性，指向该类的类信息；Class是由结构体 objc_class来定义。由此可以知道oc编写的代码都会被翻译为C++代码。</p>
+<h3 id="NSObject的内存占用"><a href="#NSObject的内存占用" class="headerlink" title="NSObject的内存占用"></a>NSObject的内存占用</h3><p><code>class_getInstanceSize</code>是一个runtime提供的API，用于获取类实例对象所占用的内存大小，源码如下：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">size_t class_getInstanceSize(Class cls)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!cls) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> cls-&gt;alignedInstanceSize();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Class's ivar size rounded up to a pointer-size boundary.</span></span><br><span class="line">uint32_t alignedInstanceSize() <span class="keyword">const</span> &#123;</span><br><span class="line">   <span class="keyword">return</span> word_align(unalignedInstanceSize());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据源码的意思来看， <code>class_getInstanceSize</code> 就是获取实例对象中成员变量内存大小。</p>
+<p>下面我们使用一个case来说明一个对象占用内存的大小：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;objc/runtime.h&gt;</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;malloc/malloc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">NSObject</span> *obj = [[<span class="built_in">NSObject</span> alloc] init];</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 获得NSObject实例对象的成员变量所占用的大小</span></span><br><span class="line">        size_t class_size = class_getInstanceSize(<span class="built_in">NSObject</span>.class);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 获得ptr指针所指向内存的大小</span></span><br><span class="line">        <span class="keyword">void</span> *ptr = (__bridge <span class="keyword">void</span> *)obj;</span><br><span class="line">        size_t ptrmalloc_size = malloc_size(ptr);</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"class_size:%zu ptrmalloc_size:%zu"</span>, class_size, ptrmalloc_size);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果为</p>
+<blockquote>
+<p>class_size:8 ptrmalloc_size:16</p>
+</blockquote>
+<p>运行结果说明nsobject类对象的大小正好是isa指针的大小为8个字节，使用view memory可以查看ptr指向的内存，占用16个字节。<br>这是因为在objc的alloc内存申请的流程中有这样一段代码，限制一个NSObect对象的大小至少要占用16个字节。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">size_t instanceSize(size_t extraBytes) <span class="keyword">const</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (fastpath(cache.hasFastInstanceSize(extraBytes))) &#123;</span><br><span class="line">        <span class="keyword">return</span> cache.fastInstanceSize(extraBytes);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    size_t size = alignedInstanceSize() + extraBytes;</span><br><span class="line">    <span class="comment">// CF requires all objects be at least 16 bytes.</span></span><br><span class="line">    <span class="keyword">if</span> (size &lt; <span class="number">16</span>) size = <span class="number">16</span>;</span><br><span class="line">    <span class="keyword">return</span> size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>所以我们知道NSObject中只有一个isa指针，所以NSObject类对象占用8个字节，NSObject在内存中占用16个字节。</strong></p>
+<h3 id="自定义类的内存占用"><a href="#自定义类的内存占用" class="headerlink" title="自定义类的内存占用"></a>自定义类的内存占用</h3><p>定义Test类，并进行如下初始化，那么obj在内存中是怎样布局的呢？</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">Test</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">int</span> property_1;</span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">int</span> property_2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">Test</span></span></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        </span><br><span class="line">        Test *obj = [[Test alloc] init];</span><br><span class="line">        obj.property_1 = <span class="number">1</span>;</span><br><span class="line">        obj.property_2 = <span class="number">2</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 获得NSObject实例对象的成员变量所占用的大小</span></span><br><span class="line">        size_t class_size = class_getInstanceSize(Test.class);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 获得ptr指针所指向内存的大小</span></span><br><span class="line">        <span class="keyword">void</span> *ptr = (__bridge <span class="keyword">void</span> *)obj;</span><br><span class="line">        size_t ptrmalloc_size = malloc_size(ptr);</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"class_size:%zu ptrmalloc_size:%zu"</span>, class_size, ptrmalloc_size);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行的结果如下</p>
+<blockquote>
+<p>class_size:16 ptrmalloc_size:16</p>
+</blockquote>
+<p>使用view memory查看ptr指向的内存，如下图<br><img src="/images/ios/1.png" alt><br>其中红框是对象属性property_1和property_2 的值，分别是1和2，int类型各占4个字节。</p>
+<p>如果Test的定义如下</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">Test</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">int</span> property_1;</span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">int</span> property_2;</span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="keyword">int</span> property_3;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<p>初始化obj并赋值</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Test *obj = [[Test alloc] init];</span><br><span class="line">obj.property_1 = <span class="number">1</span>;</span><br><span class="line">obj.property_2 = <span class="number">2</span>;</span><br><span class="line">obj.property_3 = <span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果为</p>
+<blockquote>
+<p>class_size:24 ptrmalloc_size:32</p>
+</blockquote>
+<p>则在内存中的布局如下，可以看到property_1、property_2和property_3 的值分别为1、2、3<br><img src="/images/ios/2.png" alt><br>首先Test的类对象的大小为24，但是为何不是 8(isa指针) + 三个属性占用的12个字节 = 20 个字节？<br>这是因为表示Class的struct objc_class是一个结构体，结构体大小结果要为成员中最大字节的整数倍，所以Test类指向的objc_class变量大小为24。</p>
+<p>对象在内存中占用了32个字节，这是因为malloc要满足 16 字节对齐原则 ( 可以在 libmaclloc 源码查找到 ) , 因此实际总占用内存为24. 而实际开辟则满足对齐标准开辟为 32.<br><img src="/images/ios/3.png" alt></p>
+<p>参考<br><a href="https://juejin.cn/post/6844903939985391629" target="_blank" rel="noopener">https://juejin.cn/post/6844903939985391629</a><br><a href="https://zhuanlan.zhihu.com/p/98432137" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/98432137</a></p>
+
+      
+      
+        <div class="page-reward">
+          <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang">赏</a></p>
+          <div class="hide_box"></div>
+          <div class="shang_box">
+            <a class="shang_close" href="javascript:void(0)" onclick="dashangToggle()">×</a>
+            <div class="shang_tit">
+              <p>谢谢支持</p>
+            </div>
+            <div class="shang_payimg">
+              <img src="/img/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+            </div>
+              <div class="pay_explain">扫码打赏，你说多少就多少</div>
+            <div class="shang_payselect">
+              
+                <div class="pay_item checked" data-id="alipay">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/alipay.png" alt="支付宝" /></span>
+                </div>
+              
+              
+                <div class="pay_item" data-id="wechat">
+                  <span class="radiobox"></span>
+                  <span class="pay_logo"><img src="/img/weixin.png" alt="微信" /></span>
+                </div>
+              
+            </div>
+            <div class="shang_info">
+              <p>打开<span id="shang_pay_txt">支付宝</span>扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+        <script type="text/javascript">
+          $(".pay_item").click(function(){
+            $(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+            var dataid=$(this).attr('data-id');
+            $(".shang_payimg img").attr("src","/img/"+dataid+"img.jpg");
+            $("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+          });
+          function dashangToggle(){
+            
+            $(".hide_box").fadeToggle();
+            $(".shang_box").fadeToggle();
+          }
+        </script>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2021/04/09/NSObject对象占用多少内存/">NSObject对象占用多少内存</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Code Honor 的个人博客">Code Honor</a></p>
+        <p><span>发布时间:</span>2021年04月09日 - 17时42分</p>
+        <p><span>最后更新:</span>2021年04月09日 - 23时04分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2021/04/09/NSObject对象占用多少内存/" title="NSObject对象占用多少内存">http://coderhonor.com/2021/04/09/NSObject对象占用多少内存/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://coderhonor.com/2021/04/09/NSObject对象占用多少内存/　　作者: Code Honor" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2021/04/09/Objective-C-中对象的分类/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Objective-C 中对象的分类
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/07/17/我愿意成为她的守护天使/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">我愿意成为她的守护天使</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#NSObject的本质"><span class="toc-number">1.</span> <span class="toc-text">NSObject的本质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NSObject的内存占用"><span class="toc-number">2.</span> <span class="toc-text">NSObject的内存占用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义类的内存占用"><span class="toc-number">3.</span> <span class="toc-text">自定义类的内存占用</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+<div class="bdsharebuttonbox">
+	<a href="#" class="fx fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+	<a href="#" class="fx fa-weixin bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+	<a href="#" class="fx fa-qq bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+	<a href="#" class="fx fa-facebook-official bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+	<a href="#" class="fx fa-twitter bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+	<a href="#" class="fx fa-linkedin bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+	<a href="#" class="fx fa-files-o bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+</div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+
+
+
+    
+        <section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'zhangdongxuan'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2021/04/09/Objective-C-中对象的分类/" title="上一篇: Objective-C 中对象的分类">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2019/07/17/我愿意成为她的守护天使/" title="下一篇: 我愿意成为她的守护天使">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2021/04/09/Objective-C-中对象的分类/">Objective-C 中对象的分类</a></li><li class="post-list-item"><a class="post-list-link" href="/2021/04/09/NSObject对象占用多少内存/">NSObject对象占用多少内存</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/17/我愿意成为她的守护天使/">我愿意成为她的守护天使</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/09/Flex-Bison/">Flex & Bison</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/08/音频基本概念/">音频基本概念</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/01/视频播放基本原理/">视频播放基本原理</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/26/NSAutoreleasePool分析/">NSAutoreleasePool分析</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/10/大屏-iPhone-的适配-转/">大屏 iPhone 的适配[转]</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/05/iOS-图片压缩/">iOS 图片压缩</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/15/edgesForExtendedLayout/">edgesForExtendedLayout</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/07/iOS视频播放常用类/">iOS视频播放常用类</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/05/iOS实现文字复制/">iOS实现文字复制</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/31/MacOS-编译C/">MacOS 编译C++</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/06/iOS-观察者模式/">iOS 观察者模式</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2021 Code Honor
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >访问: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>
